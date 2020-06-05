@@ -15,120 +15,112 @@ class GifCard extends Component {
   };
 
   componentDidMount(){
-    const API_KEY = process.env.REACT_APP_GIF_KEY;
-    const url = `http://api.giphy.com/v1/gifs/trending?api_key=${API_KEY}`;
-    axios
-      .get(url)
-      .then((response) => {
-        const data = response.data;
-        const gifInfo = data
-        let temp;
+          const API_KEY = process.env.REACT_APP_GIF_KEY;
+          const url = `http://api.giphy.com/v1/gifs/trending?api_key=${API_KEY}`;
+          axios
+            .get(url)
+            .then((response) => {
+              const data = response.data;
+              const gifInfo = data
+              let temp;
 
-        for(let i = 0; i < gifInfo.data.length; i++)
-        { 
-          temp = [gifInfo.data[i].images.downsized_large.url];
-          this.setState({
-            gifArray: [...this.state.gifArray, temp], searchInput: this.state.searchInput}) 
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err);
-        this.setState({ gifArray: [] });
-      });
+              for(let i = 0; i < gifInfo.data.length; i++)
+              { 
+                temp = [gifInfo.data[i].images.downsized_large.url];
+                this.setState({
+                  gifArray: [...this.state.gifArray, temp], searchInput: this.state.searchInput}) 
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+              alert(err);
+              this.setState({ gifArray: [] });
+            });
   };
 
   randomize = () =>{
-    this.setState(this.intialState);
-    const searchInput = this.state.searchInput;
-    const API_KEY = process.env.REACT_APP_GIF_KEY;
-    const url = `http://api.giphy.com/v1/gifs/random?api_key=${API_KEY}`;
-    axios
-      .get(url)
-      .then((response) => {
-        const data = response.data;
-        const gifInfo = data
-        let temp;
-        console.log("213")
-        console.log(gifInfo.data.url)
-    
-          temp = [gifInfo.data.images.downsized_large.url];
-          this.setState({
-            gifArray: [...this.state.gifArray, temp], searchInput: this.state.searchInput}) 
+          this.setState(this.intialState);
+          const searchInput = this.state.searchInput;
+          const API_KEY = process.env.REACT_APP_GIF_KEY;
+          const url = `http://api.giphy.com/v1/gifs/random?api_key=${API_KEY}`;
+          axios
+            .get(url)
+            .then((response) => {
+              const data = response.data;
+              const gifInfo = data
+              let temp;
+              console.log("213")
+              console.log(gifInfo.data.url)
+          
+                temp = [gifInfo.data.images.downsized_large.url];
+                this.setState({
+                  gifArray: [...this.state.gifArray, temp], searchInput: this.state.searchInput}) 
 
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err);
-        this.setState({ gifArray: [] });
-      });
+            })
+            .catch((err) => {
+              console.log(err);
+              alert(err);
+              this.setState({ gifArray: [] });
+            });
   }
 
   handleSearch = () => {
+        this.setState(this.intialState);
+        const searchInput = this.state.searchInput;
+        const API_KEY = process.env.REACT_APP_GIF_KEY;
+        const url = `http://api.giphy.com/v1/gifs/search?q=${searchInput}&api_key=${API_KEY}`;
+        axios
+          .get(url)
+          .then((response) => {
+            const data = response.data;
+            const gifInfo = data
 
-    this.setState(this.intialState);
-    const searchInput = this.state.searchInput;
-    const API_KEY = process.env.REACT_APP_GIF_KEY;
-    const url = `http://api.giphy.com/v1/gifs/search?q=${searchInput}&api_key=${API_KEY}`;
-    axios
-      .get(url)
-      .then((response) => {
-        const data = response.data;
-        const gifInfo = data
-        console.log("GifINFO" + gifInfo)
-        // console.log("HERE" + gifInfo.data[0].images.downsized_large.url);
-        console.log(gifInfo.data.length);
-
-        let temp;
-
-        for(let i = 0; i < gifInfo.data.length; i++)
-        { 
-          temp = [gifInfo.data[i].images.downsized_large.url];
-          this.setState({
-            gifArray: [...this.state.gifArray, temp], searchInput: this.state.searchInput}) 
-        }
-
-        // this.setState({ gifArray: gifInfo.data[0].images.downsized_large.url, searchInput: searchInput });
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err);
-        this.setState({ gifArray: [] });
-      });
+            let temp;
+            for(let i = 0; i < gifInfo.data.length; i++)
+            { 
+              temp = [gifInfo.data[i].images.downsized_large.url];
+              this.setState({
+                gifArray: [...this.state.gifArray, temp], searchInput: this.state.searchInput}) 
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            alert(err);
+            this.setState({ gifArray: [] });
+          });
   };
 
   render() {
+            let display;
+            let displayTrend 
 
-    let display;
-    let display2 
-
-    if(this.state.searchInput === "")
-     display2= (<h3>Currently Trending</h3>)
-     else{
-       display2 =""
-     }
-      display = (
-        <div  style={{border: '2px solid black' }}> 
-        <ul  >
-            {this.state.gifArray.map((info) => (
-            <img src ={info} className = "photo"></img>
-          ))}
-      </ul>
-      </div>
-      );
-    return (
-      <div >
-            <h1>Gif Finder</h1>
-            <Search
-            value={this.state.searchInput}
-            onChange={this.handleInput}
-            onSearch={this.handleSearch}
-            onRandom={this.randomize}/>
-            {display2}
-            <br></br>
-            {display}
-      </div>
-    );
+            if(this.state.searchInput === "")
+            displayTrend= (<h3>Currently Trending</h3>)
+            else{
+              displayTrend =""
+            }
+              display = (
+                <div  style={{border: '2px solid black' }}> 
+                <ul  >
+                    {this.state.gifArray.map((info) => (
+                    <img src ={info} className = "photo"></img>
+                  ))}
+              </ul>
+              </div>
+              );
+            return (
+              <div >
+                    <h1>Gif Finder</h1>
+                    <Search
+                    value={this.state.searchInput}
+                    onChange={this.handleInput}
+                    onSearch={this.handleSearch}
+                    onRandom={this.randomize}/>
+                    {displayTrend}
+                    <br></br>
+                    {display}
+              </div>
+            );
   }
 }
 
