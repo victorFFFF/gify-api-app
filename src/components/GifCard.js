@@ -6,7 +6,7 @@ import './GifCard.css';
 class GifCard extends Component {
   constructor(props) {
     super(props);
-    this.state = { gifArray: [], searchInput: ""};
+    this.state = { gifArray: [], searchInput: "", hide: false};
     this.intialState = {gifArray: []};
   }
 
@@ -54,7 +54,7 @@ class GifCard extends Component {
           
                 temp = [gifInfo.data.images.downsized_large.url];
                 this.setState({
-                  gifArray: [...this.state.gifArray, temp], searchInput: this.state.searchInput}) 
+                  gifArray: [...this.state.gifArray, temp], searchInput: this.state.searchInput, hide: true}) 
 
             })
             .catch((err) => {
@@ -80,7 +80,7 @@ class GifCard extends Component {
             { 
               temp = [gifInfo.data[i].images.downsized_large.url];
               this.setState({
-                gifArray: [...this.state.gifArray, temp], searchInput: this.state.searchInput}) 
+                gifArray: [...this.state.gifArray, temp], searchInput: this.state.searchInput, hide: false}) 
             }
           })
           .catch((err) => {
@@ -94,14 +94,19 @@ class GifCard extends Component {
             let display;
             let displayTrend 
 
-            if(this.state.searchInput === "")
+            if(this.state.searchInput === "" && !this.state.hide)
             displayTrend= (<h3>Currently Trending</h3>)
+            else if(this.state.hide)
+            {
+              displayTrend = ("random");
+            }
             else{
-              displayTrend =""
+              displayTrend =this.state.searchInput;
             }
               display = (
                 <div  style={{border: '2px solid black' }}> 
                 <ul  >
+                    <div><h3>{displayTrend}</h3></div>
                     {this.state.gifArray.map((info) => (
                     <img src ={info} className = "photo"></img>
                   ))}
@@ -116,8 +121,7 @@ class GifCard extends Component {
                     onChange={this.handleInput}
                     onSearch={this.handleSearch}
                     onRandom={this.randomize}/>
-                    {displayTrend}
-                    <br></br>
+                    <p>Please allow the gif to load.</p>
                     {display}
               </div>
             );
