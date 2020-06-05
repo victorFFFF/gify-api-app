@@ -5,7 +5,7 @@ import axios from "axios";
 class GifCard extends Component {
   constructor(props) {
     super(props);
-    this.state = { gifArray: "", searchInput: "" };
+    this.state = { gifArray: [], searchInput: "" };
   }
 
   handleInput = (event) => {
@@ -23,7 +23,18 @@ class GifCard extends Component {
         const gifInfo = data
         console.log("GifINFO" + gifInfo)
         // console.log("HERE" + gifInfo.data[0].images.downsized_large.url);
-        this.setState({ gifArray: gifInfo.data[0].images.downsized_large.url, searchInput: "" });
+        console.log(gifInfo.data.length);
+
+        let temp;
+
+        for(let i = 0; i < gifInfo.data.length; i++)
+        { 
+          temp = [gifInfo.data[i].images.downsized_large.url];
+          this.setState({
+            gifArray: [...this.state.gifArray, temp], searchInput: this.state.searchInput}) 
+        }
+
+        // this.setState({ gifArray: gifInfo.data[0].images.downsized_large.url, searchInput: searchInput });
       })
       .catch((err) => {
         console.log(err);
@@ -34,12 +45,17 @@ class GifCard extends Component {
 
   render() {
 
-    let display = (
-      <img
-      src={this.state.gifArray}
-    />
-    );
-
+    let display;
+      display = (
+        <ul  >
+            {this.state.gifArray.map((info) => (
+            <div  style={{border: '2px solid black'}}>
+            <img src ={info}></img>
+  
+            </div>
+          ))}
+      </ul>
+      );
     return (
       <div >
             <h4>Gif Finder</h4>
