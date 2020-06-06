@@ -40,7 +40,6 @@ class GifCard extends Component {
 
   randomize = () =>{
           this.setState(this.intialState);
-          const searchInput = this.state.searchInput;
           const API_KEY = process.env.REACT_APP_GIF_KEY;
           const url = `http://api.giphy.com/v1/gifs/random?api_key=${API_KEY}`;
           axios
@@ -95,7 +94,7 @@ class GifCard extends Component {
             let displayTrend 
 
             if(this.state.searchInput === "" && !this.state.hide)
-            displayTrend= (<h3>Currently Trending</h3>)
+            displayTrend= (<p>Currently Trending</p>)
             else if(this.state.hide)
             {
               displayTrend = ("random");
@@ -107,8 +106,8 @@ class GifCard extends Component {
                 <div  style={{border: '2px solid black' }}> 
                 <ul  >
                     <div><h3>{displayTrend}</h3></div>
-                    {this.state.gifArray.map((info) => (
-                    <img src ={info} className = "photo"></img>
+                    {this.state.gifArray.map((info, index) => (
+                    <img src ={info} alt="Not loaded" key ={index} className = "photo"></img>
                   ))}
               </ul>
               </div>
