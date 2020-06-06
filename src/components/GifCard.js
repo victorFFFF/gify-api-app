@@ -47,10 +47,7 @@ class GifCard extends Component {
             .then((response) => {
               const data = response.data;
               const gifInfo = data
-              let temp;
-              console.log("213")
-              console.log(gifInfo.data.url)
-          
+              let temp;          
                 temp = [gifInfo.data.images.downsized_large.url];
                 this.setState({
                   gifArray: [...this.state.gifArray, temp], searchInput: this.state.searchInput, hide: true}) 
